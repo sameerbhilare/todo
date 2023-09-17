@@ -1,4 +1,4 @@
-package com.husqvarna.todo.bl.db.entity;
+package com.husqvarna.todo.bl.dataaccess.entity;
 
 import com.husqvarna.todo.bl.common.TodoStatus;
 import jakarta.persistence.Column;
