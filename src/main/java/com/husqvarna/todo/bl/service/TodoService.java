@@ -7,6 +7,7 @@ import com.husqvarna.todo.bl.db.entity.Todo;
 import com.husqvarna.todo.bl.db.repository.TodoRepository;
 import com.husqvarna.todo.bl.exception.BusinessException;
 import com.husqvarna.todo.bl.vo.TodoVO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 @Service
+@Slf4j
 public class TodoService {
 
     @Autowired
@@ -27,6 +29,7 @@ public class TodoService {
 
         TodoStatus todoStatus = TodoStatus.fromValue(status);
         if (status != null && todoStatus == null) {
+            log.error("getTodos() => Received invalid status={}", status);
             throw new BusinessException(ErrorCode.INVALID_STATUS.name(), MessageConstants.INVALID_STATUS);
         }
 
@@ -48,7 +51,10 @@ public class TodoService {
 
         return todoRepository.findById(todoId)
                 .map(mapToDoVO)
-                .orElseThrow(() -> new BusinessException(ErrorCode.TASK_NOT_FOUND.name(), MessageConstants.TASK_NOT_FOUND));
+                .orElseThrow(() -> {
+                    log.error("getTodo() => Todo with ID {} not found.", todoId);
+                    return new BusinessException(ErrorCode.TASK_NOT_FOUND.name(), MessageConstants.TASK_NOT_FOUND);
+                });
     }
 
     @Transactional()
@@ -69,6 +75,7 @@ public class TodoService {
 
         TodoStatus updatedStatus = TodoStatus.fromValue(todoVO.getStatus());
         if (todoVO.getStatus() != null && updatedStatus == null) {
+            log.error("updateTodo() => Received invalid status={} for todoId={}", todoVO.getStatus(), todoId);
             throw new BusinessException(ErrorCode.INVALID_STATUS.name(), MessageConstants.INVALID_STATUS);
         }
 
@@ -96,13 +103,19 @@ public class TodoService {
         // save in the db and return mapped object
         return Optional.of(todoRepository.save(todo))
                 .map(mapToDoVO)
-                .orElseThrow(() -> new BusinessException(ErrorCode.UNABLE_TO_CREATE.name(), MessageConstants.UNABLE_TO_CREATE));
+                .orElseThrow(() -> {
+                    log.error("createTodo() => Unable to create a Todo {}", todo);
+                    return new BusinessException(ErrorCode.UNABLE_TO_CREATE.name(), MessageConstants.UNABLE_TO_CREATE);
+                });
     }
 
     private Todo validateIfTodoPresent(Long todoId) {
         // if todoId not present, throw business exception
         return todoRepository.findById(todoId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.TASK_NOT_FOUND.name(), MessageConstants.TASK_NOT_FOUND));
+                .orElseThrow(() -> {
+                    log.error("validateIfTodoPresent() => Todo with ID {} not found.", todoId);
+                    return new BusinessException(ErrorCode.TASK_NOT_FOUND.name(), MessageConstants.TASK_NOT_FOUND);
+                });
     }
 
     /**
