@@ -46,6 +46,63 @@ public class TodoService {
     private static final Function<Todo, TodoVO> mapToDoVO = todo -> TodoVO.builder()
             .id(todo.getId())
             .name(todo.getName())
-            .status(todo.getStatus())
+            .status(todo.getStatus().name())
             .build();
+
+    public TodoVO getTodo(Long todoId) {
+
+        return todoRepository.findById(todoId)
+                .map(mapToDoVO)
+                .orElseThrow(() -> new BusinessException(ErrorCode.TASK_NOT_FOUND.name(), MessageConstants.TASK_NOT_FOUND));
+    }
+
+    public void deleteTodo(Long todoId) {
+
+        // if todoId not present, throw business exception
+        validateIfTodoPresent(todoId);
+
+        // delete task
+        todoRepository.deleteById(todoId);
+    }
+
+    public void updateTodo(Long todoId, TodoVO todoVO) {
+
+        // if todoId not present, throw business exception
+        Todo todoToBeUpdated = validateIfTodoPresent(todoId);
+
+        TodoStatus updatedStatus = TodoStatus.fromValue(todoVO.getStatus());
+        if (todoVO.getStatus() != null && updatedStatus == null) {
+            throw new BusinessException(ErrorCode.INVALID_STATUS.name(), MessageConstants.INVALID_STATUS);
+        }
+
+        // update the task
+        todoToBeUpdated.setName(todoVO.getName());
+        todoToBeUpdated.setStatus(updatedStatus);
+
+        // save updated task in the db
+        todoRepository.save(todoToBeUpdated);
+    }
+
+    private Todo validateIfTodoPresent(Long todoId) {
+        // if todoId not present, throw business exception
+        return todoRepository.findById(todoId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.TASK_NOT_FOUND.name(), MessageConstants.TASK_NOT_FOUND));
+    }
+
+    public void deleteAllTodos() {
+        todoRepository.deleteAll();
+    }
+
+    public TodoVO createTodo(TodoVO todoVO) {
+
+        // create Todo_ entity
+        Todo todo = new Todo();
+        todo.setName(todoVO.getName());
+        todo.setStatus(TodoStatus.ACTIVE);
+
+        // save in the db and return mapped object
+        return Optional.of(todoRepository.save(todo))
+                .map(mapToDoVO)
+                .orElseThrow(() -> new BusinessException(ErrorCode.UNABLE_TO_CREATE.name(), MessageConstants.UNABLE_TO_CREATE));
+    }
 }

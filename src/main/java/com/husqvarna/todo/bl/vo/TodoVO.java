@@ -9,5 +9,5 @@ import lombok.Data;
 public class TodoVO {
     private Long id;
     private String name;
-    private TodoStatus status;
+    private String status;
 }

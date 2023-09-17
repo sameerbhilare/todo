@@ -7,8 +7,7 @@ import java.util.Map;
 
 @AllArgsConstructor
 public enum TodoStatus {
-    PENDING ("PENDING"),
-    IN_PROGRESS ("IN_PROGRESS"),
+    ACTIVE ("ACTIVE"),
     COMPLETED ("COMPLETED");
 
     private String status;
