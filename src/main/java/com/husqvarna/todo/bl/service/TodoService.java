@@ -10,6 +10,7 @@ import com.husqvarna.todo.bl.vo.TodoVO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -43,12 +44,6 @@ public class TodoService {
                 .toList();
     }
 
-    private static final Function<Todo, TodoVO> mapToDoVO = todo -> TodoVO.builder()
-            .id(todo.getId())
-            .name(todo.getName())
-            .status(todo.getStatus().name())
-            .build();
-
     public TodoVO getTodo(Long todoId) {
 
         return todoRepository.findById(todoId)
@@ -56,6 +51,7 @@ public class TodoService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.TASK_NOT_FOUND.name(), MessageConstants.TASK_NOT_FOUND));
     }
 
+    @Transactional()
     public void deleteTodo(Long todoId) {
 
         // if todoId not present, throw business exception
@@ -65,6 +61,7 @@ public class TodoService {
         todoRepository.deleteById(todoId);
     }
 
+    @Transactional()
     public void updateTodo(Long todoId, TodoVO todoVO) {
 
         // if todoId not present, throw business exception
@@ -83,16 +80,12 @@ public class TodoService {
         todoRepository.save(todoToBeUpdated);
     }
 
-    private Todo validateIfTodoPresent(Long todoId) {
-        // if todoId not present, throw business exception
-        return todoRepository.findById(todoId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.TASK_NOT_FOUND.name(), MessageConstants.TASK_NOT_FOUND));
-    }
-
+    @Transactional()
     public void deleteAllTodos() {
         todoRepository.deleteAll();
     }
 
+    @Transactional()
     public TodoVO createTodo(TodoVO todoVO) {
 
         // create Todo_ entity
@@ -105,4 +98,20 @@ public class TodoService {
                 .map(mapToDoVO)
                 .orElseThrow(() -> new BusinessException(ErrorCode.UNABLE_TO_CREATE.name(), MessageConstants.UNABLE_TO_CREATE));
     }
+
+    private Todo validateIfTodoPresent(Long todoId) {
+        // if todoId not present, throw business exception
+        return todoRepository.findById(todoId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.TASK_NOT_FOUND.name(), MessageConstants.TASK_NOT_FOUND));
+    }
+
+    /**
+     * Mapper function to convert Todo_ DB entity to TodoVO POJO
+     */
+    private static final Function<Todo, TodoVO> mapToDoVO = todo -> TodoVO.builder()
+            .id(todo.getId())
+            .name(todo.getName())
+            .status(todo.getStatus().name())
+            .build();
+
 }

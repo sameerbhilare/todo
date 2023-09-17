@@ -2,6 +2,7 @@ package com.husqvarna.todo.bl.controller;
 
 import com.husqvarna.todo.bl.service.TodoService;
 import com.husqvarna.todo.bl.vo.TodoVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/todos")
+@Slf4j
 public class TodoController {
 
     @Autowired
@@ -37,6 +39,7 @@ public class TodoController {
     @GetMapping("")
     public List<TodoVO> getTodos(@RequestParam(name = "status", required = false) String status) {
 
+        log.info("GET Request to fetch all Todos. Input: Status = {}", status);
         return todoService.getTodos(status);
     }
 
@@ -48,7 +51,9 @@ public class TodoController {
      * @return single Todo_ item.
      */
     @GetMapping("/{id}")
-    public TodoVO getTodo(@PathVariable(name = "id", required = true) Long todoId) {
+    public TodoVO getTodo(@PathVariable(name = "id") Long todoId) {
+
+        log.info("GET Request to fetch a Todo. Input: todoId = {}", todoId);
         return todoService.getTodo(todoId);
     }
 
@@ -62,6 +67,7 @@ public class TodoController {
     @PostMapping("")
     public ResponseEntity<TodoVO> createTodo(@RequestBody TodoVO todoVO) {
 
+        log.info("POST Request to create a Todo. Input: todoVO = {}", todoVO);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(todoService.createTodo(todoVO));
     }
@@ -75,9 +81,10 @@ public class TodoController {
      *               TodoVO.id is optional and is not considered.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> updateTodo(@PathVariable(name = "id", required = true) Long todoId,
+    public ResponseEntity<HttpStatus> updateTodo(@PathVariable(name = "id") Long todoId,
                                              @RequestBody TodoVO todoVO) {
 
+        log.info("PUT Request to update a Todo. Input: todoId = {}, todoVO = {}", todoId, todoVO);
         todoService.updateTodo(todoId, todoVO);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -89,8 +96,9 @@ public class TodoController {
      * @param todoId - ID of the Todo_ to be deleted.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteTodo(@PathVariable(name = "id", required = true) Long todoId) {
+    public ResponseEntity<HttpStatus> deleteTodo(@PathVariable(name = "id") Long todoId) {
 
+        log.info("DELETE Request to delete a Todo. Input: todoId = {}", todoId);
         todoService.deleteTodo(todoId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -100,6 +108,7 @@ public class TodoController {
      */
     @DeleteMapping("")
     public ResponseEntity<HttpStatus> purgeAllTodos() {
+        log.info("DELETE Request to delete all Todos.");
         todoService.deleteAllTodos();
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
