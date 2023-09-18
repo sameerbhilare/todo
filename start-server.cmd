@@ -3,4 +3,4 @@
 @set PATH=%PATH%;%MAVEN_HOME%;%JAVA_HOME%;
 
 CALL mvn clean -DskipTests install
-CALL java -jar target/todo-bl-0.0.1-SNAPSHOT.jar
+CALL java -Dspring.profiles.active=dev -jar target/todo-bl-0.0.1-SNAPSHOT.jar

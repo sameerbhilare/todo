@@ -19,12 +19,19 @@ Once a Todo is created, it will be in `ACTIVE` state. Once the user finishes the
 * Unit Testing
   * Refer Test class `com.husqvarna.todo.bl.TodoBlApplicationTests`
   * I am using `WebEnvironment.RANDOM_PORT` approach instead of `WebEnvironment.MOCK`.
-  * `WebEnvironment.RANDOM_PORT` approach is closer to test the real application. It is as if you test with a real http server. 
+  * `WebEnvironment.RANDOM_PORT` approach is closer to test the real application. It is as if you test with a real http server.
+* Spring Profiles (`spring.profiles.active`)
+  * `dev`: To start the application in development mode
+  * `test`: For JUnit testing.
 
 ## Database
-Currently, I am using in-memory H2 database. The database schema and initial test data is available in below files.
-* `src/main/resources/schema.sql`
-* `src/main/resources/data.sql`
+Currently, I am using in-memory H2 database for `dev` as well as `test` modes (profiles). The database schema and initial test data is available in below files.
+* Profile: `dev`
+  * `src/main/resources/schema-dev.sql`
+  * `src/main/resources/data-dev.sql`  
+* Profile: `test` (for JUnit testing only)
+  * `test/main/resources/schema.sql`
+  * `test/main/resources/data.sql`
 
 ## API
 
@@ -45,10 +52,10 @@ Currently, I am using in-memory H2 database. The database schema and initial tes
 * Java 17
 * Maven
 
-## Running the Application
+## Running the Application in `dev` mode
 Make sure you have the prerequisites mentioned above.
 
-Execute below command from root of this project. It will build and run the application on your local.
+Execute below command from root of this project. It will build and run the application on your local with `spring.profiles.active` as `dev`.
 ```
 start-server.cmd
 ```
