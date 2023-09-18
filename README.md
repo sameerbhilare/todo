@@ -16,7 +16,7 @@ Once a Todo is created, it will be in `ACTIVE` state. Once completed, the Todo w
 * User can rename a Todo.
 * Allowing a user to delete a todo.
 * Allowing a user to delete all the todos.
-* Unit Testing
+* Integration Testing
   * I am using `WebEnvironment.RANDOM_PORT` approach instead of `WebEnvironment.MOCK`.
   * `WebEnvironment.RANDOM_PORT` approach is closer to test the real application. It is as if you test with a real http server. 
 
