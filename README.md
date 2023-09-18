@@ -44,7 +44,7 @@ Make sure you have the prerequisites mentioned above.
 
 Execute below command from root of this project. It will build and run the application on your local.
 ```
-start.server.cmd
+start-server.cmd
 ```
 
 ### Way 1: Using Swagger UI
