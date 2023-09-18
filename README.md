@@ -8,10 +8,10 @@ This application exposes few REST APIs for a typical Todo application.
 
 Refer below API section to know more about the exposed endpoints.
 
-### Todo API Flow
-Once a Todo is created, it will be in `ACTIVE` state. Once completed, the Todo will be in `COMPLETED` state.
+## Todo API Flow
+Once a Todo is created, it will be in `ACTIVE` state. Once the user finishes the task, the Todo will be in `COMPLETED` state.
 
-### Architectural Decisions
+## Architectural Decisions
 * User can change the status of the Todo from `ACTIVE` to `COMPLETED` and vice-versa.
 * User can rename a Todo.
 * Allowing a user to delete a todo.
