@@ -16,7 +16,8 @@ Once a Todo is created, it will be in `ACTIVE` state. Once the user finishes the
 * User can rename a Todo.
 * Allowing a user to delete a todo.
 * Allowing a user to delete all the todos.
-* Integration Testing
+* Unit Testing
+  * Refer Test class `com.husqvarna.todo.bl.TodoBlApplicationTests`
   * I am using `WebEnvironment.RANDOM_PORT` approach instead of `WebEnvironment.MOCK`.
   * `WebEnvironment.RANDOM_PORT` approach is closer to test the real application. It is as if you test with a real http server. 
 
@@ -44,7 +45,7 @@ Currently, I am using in-memory H2 database. The database schema and initial tes
 * Java 17
 * Maven
 
-## Executing program
+## Running the Application
 Make sure you have the prerequisites mentioned above.
 
 Execute below command from root of this project. It will build and run the application on your local.
