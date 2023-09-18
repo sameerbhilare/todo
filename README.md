@@ -59,7 +59,7 @@ Prerequisite - You need to use either Postman app or Postman web for this.
 * Import attached workspace `todo-api.postman_collection.json` in the Postman.
 * Test all the exposed endpoints.
 
-## Authors
+## Author
 [@sameerbhilare](https://github.com/sameerbhilare)
 
 ## Version History
