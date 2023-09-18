@@ -72,6 +72,9 @@ Prerequisite - You need to use either Postman app or Postman web for this.
 * Import attached workspace `todo-api.postman_collection.json` in the Postman.
 * Test all the exposed endpoints.
 
+### Running the Application from IDE (e.g. IntelliJ Idea)
+Make sure you set Spring Active Profiles as `dev` using Environment variables. `spring.profiles.active=dev`
+
 ## Author
 [@sameerbhilare](https://github.com/sameerbhilare)
 
